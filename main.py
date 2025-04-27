@@ -1,4 +1,13 @@
 import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+from sklearn.preprocessing import StandardScaler
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+
+
+# data reading and data cleaning, EDA part
 df = pd.read_csv("laptop_price.csv", encoding="latin-1")
 
 df = df.drop("Product", axis=1)
@@ -66,8 +75,7 @@ gpu_categories.columns = [col + "_GPU" for col in gpu_categories.columns]
 df = df.join(gpu_categories)
 df = df.drop("GPU Brand", axis=1)
 
-import seaborn as sns
-import matplotlib.pyplot as plt
+# graph generation part
 
 numeric_df = df.select_dtypes(include=['number'])
 # Compute the correlation with the target variable 'Price_euros'
@@ -83,9 +91,7 @@ sns.heatmap(limited_df.corr(), annot=True, cmap="YlGnBu")
 plt.savefig('heatmap.png')
 plt.show()
 
-from sklearn.preprocessing import StandardScaler
-from sklearn.model_selection import train_test_split
-from sklearn.ensemble import RandomForestRegressor
+# model creation part
 
 X, y = limited_df.drop("Price_euros", axis=1), limited_df["Price_euros"]
 
